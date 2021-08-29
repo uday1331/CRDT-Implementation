@@ -124,4 +124,63 @@ describe("CRDT Element Graph Tests", () => {
       ]);
     });
   });
+
+  describe("Connected Vertices", () => {
+    it("check if connected for a v-shaped graph", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+      crdtElementGraph.addVertex("vertex-three");
+
+      crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      crdtElementGraph.addEdge("vertex-two", "vertex-three");
+
+      const resOne = crdtElementGraph.checkConnected(
+        "vertex-one",
+        "vertex-two"
+      );
+      const resTwo = crdtElementGraph.checkConnected(
+        "vertex-two",
+        "vertex-three"
+      );
+      const resThree = crdtElementGraph.checkConnected(
+        "vertex-three",
+        "vertex-one"
+      );
+
+      expect(resOne).to.be.true;
+      expect(resTwo).to.be.true;
+      expect(resThree).to.be.true;
+    });
+
+    it("check if connected for a graph with 2 connected componenets", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+      crdtElementGraph.addVertex("vertex-three");
+      crdtElementGraph.addVertex("vertex-four");
+      crdtElementGraph.addVertex("vertex-five");
+      crdtElementGraph.addVertex("vertex-six");
+
+      crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      crdtElementGraph.addEdge("vertex-two", "vertex-three");
+      crdtElementGraph.addEdge("vertex-three", "vertex-four");
+      crdtElementGraph.addEdge("vertex-five", "vertex-six");
+
+      const resOne = crdtElementGraph.checkConnected(
+        "vertex-one",
+        "vertex-four"
+      );
+      const resTwo = crdtElementGraph.checkConnected(
+        "vertex-one",
+        "vertex-six"
+      );
+      const resThree = crdtElementGraph.checkConnected(
+        "vertex-five",
+        "vertex-six"
+      );
+
+      expect(resOne).to.be.true;
+      expect(resTwo).to.be.false;
+      expect(resThree).to.be.true;
+    });
+  });
 });
