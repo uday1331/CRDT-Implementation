@@ -9,7 +9,7 @@ interface CrdtElementGraphInterface {
   addEdge(u: string, v: string): TwoPSetElement;
   removeEdge(u: string, v: string): TwoPSetElement;
   getConnectedVertices(id: string): Array<TwoPSetElement>;
-  checkConnected(u: string, v: string): boolean;
+  findPath(u: string, v: string): Array<string>;
 }
 
 class CrdtElementGraphVertexElement extends TwoPSetElement {
@@ -130,28 +130,36 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
     return this._edgeSet.exists(clone.hash());
   }
 
-  public checkConnected(u: string, v: string): boolean {
+  public findPath(u: string, v: string): Array<string> {
     const discovered: Set<string> = new Set();
     const stack: Array<string> = [];
+    const path: Array<string> = [];
 
     stack.push(u);
 
     while (stack.length != 0) {
       const current = stack.pop();
+      path.push(current);
       discovered.add(current);
 
       if (current === v) {
-        return true;
+        return path;
       }
 
+      let added = false;
       for (const { vertex } of this.getConnectedVertices(current)) {
         if (!discovered.has(vertex)) {
+          added = true;
           stack.push(vertex);
         }
       }
+
+      if (!added) {
+        path.pop();
+      }
     }
 
-    return false;
+    return [];
   }
 }
 

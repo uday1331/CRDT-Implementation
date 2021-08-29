@@ -125,8 +125,8 @@ describe("CRDT Element Graph Tests", () => {
     });
   });
 
-  describe("Connected Vertices", () => {
-    it("check if connected for a v-shaped graph", async () => {
+  describe("Find Path", () => {
+    it("find path between ends of v-shaped graph", async () => {
       crdtElementGraph.addVertex("vertex-one");
       crdtElementGraph.addVertex("vertex-two");
       crdtElementGraph.addVertex("vertex-three");
@@ -134,22 +134,10 @@ describe("CRDT Element Graph Tests", () => {
       crdtElementGraph.addEdge("vertex-one", "vertex-two");
       crdtElementGraph.addEdge("vertex-two", "vertex-three");
 
-      const resOne = crdtElementGraph.checkConnected(
-        "vertex-one",
-        "vertex-two"
-      );
-      const resTwo = crdtElementGraph.checkConnected(
-        "vertex-two",
-        "vertex-three"
-      );
-      const resThree = crdtElementGraph.checkConnected(
-        "vertex-three",
-        "vertex-one"
-      );
+      const res = crdtElementGraph.findPath("vertex-one", "vertex-three");
 
-      expect(resOne).to.be.true;
-      expect(resTwo).to.be.true;
-      expect(resThree).to.be.true;
+      expect(res).to.have.length(3);
+      expect(res).to.have.members(["vertex-one", "vertex-two", "vertex-three"]);
     });
 
     it("check if connected for a graph with 2 connected componenets", async () => {
@@ -165,22 +153,17 @@ describe("CRDT Element Graph Tests", () => {
       crdtElementGraph.addEdge("vertex-three", "vertex-four");
       crdtElementGraph.addEdge("vertex-five", "vertex-six");
 
-      const resOne = crdtElementGraph.checkConnected(
-        "vertex-one",
-        "vertex-four"
-      );
-      const resTwo = crdtElementGraph.checkConnected(
-        "vertex-one",
-        "vertex-six"
-      );
-      const resThree = crdtElementGraph.checkConnected(
-        "vertex-five",
-        "vertex-six"
-      );
+      const resOne = crdtElementGraph.findPath("vertex-one", "vertex-four");
+      const resTwo = crdtElementGraph.findPath("vertex-one", "vertex-six");
 
-      expect(resOne).to.be.true;
-      expect(resTwo).to.be.false;
-      expect(resThree).to.be.true;
+      expect(resOne).to.have.length(4);
+      expect(resOne).to.have.members([
+        "vertex-one",
+        "vertex-two",
+        "vertex-three",
+        "vertex-four",
+      ]);
+      expect(resTwo).to.have.length(0);
     });
   });
 });
