@@ -1,6 +1,5 @@
 import { expect } from "chai";
 import { CrdtElementGraph } from "../crdt-element-graph";
-import { ElementNode } from "../element-node";
 
 describe("CRDT Element Graph Tests", () => {
   let crdtElementGraph: CrdtElementGraph;
@@ -9,11 +8,42 @@ describe("CRDT Element Graph Tests", () => {
     crdtElementGraph = new CrdtElementGraph();
   });
 
-  it("adds vertex to Graph", () => {
-    const res = crdtElementGraph.addVertex("vertex-one", 1);
-    const expected = new ElementNode("vertex-one", 1);
+  describe("Add Vertex", () => {
+    it("adds vertex to Graph", () => {
+      const res = crdtElementGraph.addVertex("vertex-one");
 
-    expect(res.created).to.be.equal(expected.created);
-    expect(res.id).to.be.equal(expected.id);
+      expect(res.vertex).to.be.equal("vertex-one");
+    });
+
+    it("errors when trying add vertex to Graph if exists", () => {
+      crdtElementGraph.addVertex("vertex-one");
+      const res = () => crdtElementGraph.addVertex("vertex-one");
+
+      expect(res).to.throw("Error adding vertex.");
+    });
+  });
+
+  describe("Exists Vertex", () => {
+    it("check vertex exists in Graph", () => {
+      crdtElementGraph.addVertex("vertex-one");
+      const res = crdtElementGraph.existsVertex("vertex-one");
+
+      expect(res).to.be.true;
+    });
+  });
+
+  describe("Remove Vertex", () => {
+    it("remove vertex from Graph with no edge", async () => {
+      const original = crdtElementGraph.addVertex("vertex-one");
+      const res = crdtElementGraph.removeVertex("vertex-one");
+
+      expect(res.vertex).to.be.equal(original.vertex);
+    });
+
+    // it("errors when trying to remove vertex with edges", () => {
+    //   const res = () => crdtElementGraph.removeVertex("element-one");
+
+    //   expect(res).to.throw(`Element with id: element-one does not exist.`);
+    // });
   });
 });
