@@ -67,4 +67,28 @@ describe("Two-P set", () => {
       expect(res).to.throw(`Element with key: some-hash does not exist.`);
     });
   });
+
+  describe("Get Effective Elements", () => {
+    it("get Effective Elements after add", () => {
+      const original = twoPSet.add(
+        new TwoPSetElement("element-one", Date.now())
+      );
+
+      const res = twoPSet.getEffective();
+
+      expect(res).to.have.length(1);
+      expect(res).to.have.members([original]);
+    });
+
+    it("get empty Effective Elements after add, remove", () => {
+      const original = twoPSet.add(
+        new TwoPSetElement("element-one", Date.now())
+      );
+      twoPSet.remove(original.hash());
+
+      const res = twoPSet.getEffective();
+
+      expect(res).to.have.length(0);
+    });
+  });
 });

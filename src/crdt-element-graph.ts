@@ -84,11 +84,28 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
     return this._vertexSet.exists(clone.hash());
   }
 
-  // public getConnectedVertices(
-  //   id: string
-  // ): Array<CrdtElementGraphVertexElement> {
-  //   return [];
-  // }
+  public getConnectedVertices(
+    id: string
+  ): Array<CrdtElementGraphVertexElement> {
+    if (!this.existsVertex(id)) {
+      throw new Error("Given Vertex does not exist.");
+    }
+
+    const effectiveEdges = this._edgeSet.getEffective();
+    return effectiveEdges
+      .map(({ edge }) => {
+        if (edge[0] == id) {
+          return new CrdtElementGraphVertexElement(edge[1]);
+        }
+
+        if (edge[1] == id) {
+          return new CrdtElementGraphVertexElement(edge[0]);
+        }
+
+        return null;
+      })
+      .filter((element) => element != null);
+  }
 
   public addEdge(u: string, v: string): CrdtElementGraphEdgeElement {
     if (!this.existsVertex(u) || !this.existsVertex(v)) {

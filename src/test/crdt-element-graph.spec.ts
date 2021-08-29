@@ -95,4 +95,33 @@ describe("CRDT Element Graph Tests", () => {
       expect(res).to.be.true;
     });
   });
+
+  describe("Connected Edges", () => {
+    it("get conncted vertices for vertices of edge", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+      crdtElementGraph.addVertex("vertex-three");
+
+      crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      crdtElementGraph.addEdge("vertex-two", "vertex-three");
+      crdtElementGraph.addEdge("vertex-three", "vertex-one");
+
+      const resOne = crdtElementGraph.getConnectedVertices("vertex-one");
+      const resTwo = crdtElementGraph.getConnectedVertices("vertex-two");
+      const resThree = crdtElementGraph.getConnectedVertices("vertex-three");
+
+      expect(resOne.map(({ vertex }) => vertex)).to.have.members([
+        "vertex-two",
+        "vertex-three",
+      ]);
+      expect(resTwo.map(({ vertex }) => vertex)).to.have.members([
+        "vertex-one",
+        "vertex-three",
+      ]);
+      expect(resThree.map(({ vertex }) => vertex)).to.have.members([
+        "vertex-one",
+        "vertex-two",
+      ]);
+    });
+  });
 });
