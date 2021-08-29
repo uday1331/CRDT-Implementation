@@ -1,13 +1,10 @@
-import { v4 as uuid } from "uuid"
+import { v4 as uuid } from "uuid";
 
-class GraphNode {
+class ElementNode {
   private _created: number;
   private _id: string;
 
-  constructor (
-      id: string = uuid(), 
-      created: number = Date.now()
-    ) {
+  constructor(id: string = uuid(), created: number = Date.now()) {
     this._created = created;
     this._id = id;
   }
@@ -16,9 +13,9 @@ class GraphNode {
     return this._id;
   }
 
-  public get created(): number{
+  public get created(): number {
     return this._created;
   }
 }
 
-export { GraphNode }
+export { ElementNode };
