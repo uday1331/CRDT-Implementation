@@ -33,17 +33,39 @@ describe("CRDT Element Graph Tests", () => {
   });
 
   describe("Remove Vertex", () => {
-    it("remove vertex from Graph with no edge", async () => {
+    it("remove vertex from Graph with no edge", () => {
       const original = crdtElementGraph.addVertex("vertex-one");
       const res = crdtElementGraph.removeVertex("vertex-one");
 
       expect(res.vertex).to.be.equal(original.vertex);
     });
 
-    // it("errors when trying to remove vertex with edges", () => {
-    //   const res = () => crdtElementGraph.removeVertex("element-one");
+    it("errors when trying to remove vertex with edges", () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+      crdtElementGraph.addEdge("vertex-one", "vertex-two");
 
-    //   expect(res).to.throw(`Element with id: element-one does not exist.`);
-    // });
+      crdtElementGraph.removeVertex("vertex-two");
+    });
+  });
+
+  describe("Add Edge", () => {
+    it("add edge for existing vertices", () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+
+      const res = crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      expect(res.edge).to.have.members(["vertex-one", "vertex-two"]);
+    });
+
+    it("errors when trying to add edge for non existent vertices", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+
+      const res = () => crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      expect(res).to.throw("One or both vertices do not exist.");
+    });
   });
 });
+
+// TODO:
+// 1. errors when trying to remove vertex with edges
