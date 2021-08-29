@@ -32,11 +32,20 @@ describe("Two-P set", () => {
   });
 
   describe("Exists Element", () => {
-    it("check element exists in Set", () => {
+    it("check element exists in Set after add", () => {
       const original = twoPSet.add(new TwoPSetElement("element-one", 1));
       const res = twoPSet.exists(original.hash());
 
       expect(res).to.be.true;
+    });
+
+    it("check element exists in Set after add, remove", async () => {
+      const original = twoPSet.add(new TwoPSetElement("element-one", 1));
+      await delay(20);
+      twoPSet.remove(original.hash());
+      const res = twoPSet.exists(original.hash());
+
+      expect(res).to.be.false;
     });
   });
 

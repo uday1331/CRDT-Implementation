@@ -51,7 +51,7 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
     if (
       !this._addSet[key] ||
       (this._removeSet[key] &&
-        this._removeSet[key].created > this._addSet[key].created)
+        this._removeSet[key].created >= this._addSet[key].created)
     ) {
       return false;
     }

@@ -7,6 +7,8 @@ interface CrdtElementGraphInterface {
   removeVertex(id: string): TwoPSetElement;
   existsVertex(id: string): boolean;
   addEdge(u: string, v: string): TwoPSetElement;
+  removeEdge(u: string, v: string): TwoPSetElement;
+  getConnectedVertices(id: string): Array<TwoPSetElement>;
 }
 
 class CrdtElementGraphVertexElement extends TwoPSetElement {
@@ -70,7 +72,11 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   public removeVertex(id: string): CrdtElementGraphVertexElement {
     const clone = new CrdtElementGraphVertexElement(id);
-    return this._vertexSet.remove(clone.hash());
+    try {
+      return this._vertexSet.remove(clone.hash());
+    } catch (e) {
+      throw new Error("Error removing vertex.");
+    }
   }
 
   public existsVertex(id: string): boolean {
@@ -78,12 +84,32 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
     return this._vertexSet.exists(clone.hash());
   }
 
+  // public getConnectedVertices(
+  //   id: string
+  // ): Array<CrdtElementGraphVertexElement> {
+  //   return [];
+  // }
+
   public addEdge(u: string, v: string): CrdtElementGraphEdgeElement {
     if (!this.existsVertex(u) || !this.existsVertex(v)) {
       throw new Error("One or both vertices do not exist.");
     }
 
     return this._edgeSet.add(new CrdtElementGraphEdgeElement(u, v));
+  }
+
+  public removeEdge(u: string, v: string): CrdtElementGraphEdgeElement {
+    if (!this.existsVertex(u) || !this.existsVertex(v)) {
+      throw new Error("One or both vertices do not exist.");
+    }
+    const clone = new CrdtElementGraphEdgeElement(u, v);
+
+    return this._edgeSet.remove(clone.hash());
+  }
+
+  public existsEdge(u: string, v: string): boolean {
+    const clone = new CrdtElementGraphEdgeElement(u, v);
+    return this._edgeSet.exists(clone.hash());
   }
 }
 
