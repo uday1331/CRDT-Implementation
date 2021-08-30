@@ -92,8 +92,8 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
       throw new Error("Given Vertex does not exist.");
     }
 
-    const effectiveEdges = this._edgeSet.getEffective();
-    return effectiveEdges
+    const effectiveAddEdges = this._edgeSet.getEffectiveAdds();
+    return effectiveAddEdges
       .map(({ edge }) => {
         if (edge[0] == id) {
           return new CrdtElementGraphVertexElement(edge[1]);
@@ -161,6 +161,13 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
     return [];
   }
+
+  // static merge(
+  //   first: CrdtElementGraph,
+  //   second: CrdtElementGraph
+  // ): CrdtElementGraph {
+  //   return first;
+  // }
 }
 
 export { CrdtElementGraph };

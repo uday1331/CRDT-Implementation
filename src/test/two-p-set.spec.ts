@@ -68,13 +68,13 @@ describe("Two-P set", () => {
     });
   });
 
-  describe("Get Effective Elements", () => {
-    it("get Effective Elements after add", () => {
+  describe("Get Effective Adds", () => {
+    it("get Effective Adds after add", () => {
       const original = twoPSet.add(
         new TwoPSetElement("element-one", Date.now())
       );
 
-      const res = twoPSet.getEffective();
+      const res = twoPSet.getEffectiveAdds();
 
       expect(res).to.have.length(1);
       expect(res).to.have.members([original]);
@@ -86,9 +86,31 @@ describe("Two-P set", () => {
       );
       twoPSet.remove(original.hash());
 
-      const res = twoPSet.getEffective();
+      const res = twoPSet.getEffectiveAdds();
 
       expect(res).to.have.length(0);
+    });
+  });
+
+  describe("Get Effective Removes", () => {
+    it("get Effective Elements Removes after add", () => {
+      twoPSet.add(new TwoPSetElement("element-one", Date.now()));
+
+      const res = twoPSet.getEffectiveRemoves();
+
+      expect(res).to.have.length(0);
+    });
+
+    it("get empty Effective Removes after add, remove", () => {
+      const original = twoPSet.add(
+        new TwoPSetElement("element-one", Date.now())
+      );
+      twoPSet.remove(original.hash());
+
+      const res = twoPSet.getEffectiveRemoves();
+
+      expect(res).to.have.length(1);
+      expect(res.map(({ id }) => id)).to.have.members([original.id]);
     });
   });
 });

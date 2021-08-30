@@ -2,7 +2,8 @@ interface TwoPSetInterface<T> {
   add(element: T): T;
   remove(id: string): T;
   exists(id: string): boolean;
-  getEffective(): Array<T>;
+  getEffectiveAdds(): Array<T>;
+  getEffectiveRemoves(): Array<T>;
 }
 
 export interface TwoPSetElementInterface<T> {
@@ -57,9 +58,15 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
     return true;
   }
 
-  public getEffective(): Array<T> {
+  public getEffectiveAdds(): Array<T> {
     return Array.from(this._addSet.values()).filter((value) =>
       this.exists(value.hash())
+    );
+  }
+
+  public getEffectiveRemoves(): Array<T> {
+    return Array.from(this._removeSet.values()).filter(
+      (value) => !this.exists(value.hash())
     );
   }
 }
