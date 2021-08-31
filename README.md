@@ -6,14 +6,14 @@ I had a really fun time working on this project. During the time that I had, I e
 
 ## Sections
 
-- CLI Commands
+- [CLI Commands](#cli-commands)
 - [Examples](#examples)
-- Clarifications
-- Improvements
+- [Clarifications](#clarifications)
+- [Improvements](#improvements)
 
 The rest of the documentation can be found in the form of JSDocs in the class files.
 
-## ClI Commands
+## CLI Commands
 
 `yarn test` - Fires up the testing module.
 
