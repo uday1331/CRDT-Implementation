@@ -22,6 +22,6 @@
   },
   "scripts": {
     "start": "tsc && node ./dist/index.js",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' && yarn tsc && mocha 'dist/test/**/*.spec.js'"
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' && rm -rf dist && yarn tsc && mocha 'dist/test/**/*.spec.js'"
   }
 }
