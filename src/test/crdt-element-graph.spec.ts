@@ -1,5 +1,6 @@
 import { expect } from "chai";
 import { CrdtElementGraph } from "../crdt-element-graph";
+import { delay } from "./utils";
 
 describe("CRDT Element Graph Tests", () => {
   let crdtElementGraph: CrdtElementGraph;
@@ -63,7 +64,7 @@ describe("CRDT Element Graph Tests", () => {
       crdtElementGraph.addVertex("vertex-two");
 
       const res = crdtElementGraph.addEdge("vertex-one", "vertex-two");
-      expect(res.edge).to.have.members(["vertex-one", "vertex-two"]);
+      expect(res.edge).to.eql(["vertex-two", "vertex-one"]);
     });
 
     it("errors when trying to add edge for non existent vertices", async () => {
@@ -81,7 +82,7 @@ describe("CRDT Element Graph Tests", () => {
       crdtElementGraph.addEdge("vertex-one", "vertex-two");
 
       const res = crdtElementGraph.removeEdge("vertex-one", "vertex-two");
-      expect(res.edge).to.have.members(["vertex-one", "vertex-two"]);
+      expect(res.edge).to.eql(["vertex-two", "vertex-one"]);
     });
   });
 
@@ -97,7 +98,7 @@ describe("CRDT Element Graph Tests", () => {
   });
 
   describe("Connected Edges", () => {
-    it("get conncted vertices for vertices of edge", async () => {
+    it("get connected vertices for vertices of edge", async () => {
       crdtElementGraph.addVertex("vertex-one");
       crdtElementGraph.addVertex("vertex-two");
       crdtElementGraph.addVertex("vertex-three");
@@ -136,8 +137,7 @@ describe("CRDT Element Graph Tests", () => {
 
       const res = crdtElementGraph.findPath("vertex-one", "vertex-three");
 
-      expect(res).to.have.length(3);
-      expect(res).to.have.members(["vertex-one", "vertex-two", "vertex-three"]);
+      expect(res).to.eql(["vertex-one", "vertex-two", "vertex-three"]);
     });
 
     it("check if connected for a graph with 2 connected componenets", async () => {
@@ -156,8 +156,7 @@ describe("CRDT Element Graph Tests", () => {
       const resOne = crdtElementGraph.findPath("vertex-one", "vertex-four");
       const resTwo = crdtElementGraph.findPath("vertex-one", "vertex-six");
 
-      expect(resOne).to.have.length(4);
-      expect(resOne).to.have.members([
+      expect(resOne).to.eql([
         "vertex-one",
         "vertex-two",
         "vertex-three",
@@ -166,4 +165,47 @@ describe("CRDT Element Graph Tests", () => {
       expect(resTwo).to.have.length(0);
     });
   });
+
+  describe("Merge Graphs", () => {
+    it("gets merged graph from two graphs with added and removed vertices", async () => {
+      const crdtElementGraphTwo = new CrdtElementGraph();
+
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraphTwo.addVertex("vertex-one");
+      await delay(10);
+      crdtElementGraph.addVertex("vertex-two");
+      crdtElementGraphTwo.addVertex("vertex-two");
+      await delay(10);
+      crdtElementGraph.addVertex("vertex-three");
+
+      crdtElementGraph.addEdge("vertex-one", "vertex-two");
+      crdtElementGraphTwo.addEdge("vertex-one", "vertex-two");
+      await delay(10);
+      crdtElementGraph.addEdge("vertex-two", "vertex-three");
+      await delay(10);
+      crdtElementGraph.addEdge("vertex-three", "vertex-one");
+      await delay(10);
+      crdtElementGraphTwo.removeEdge("vertex-one", "vertex-two");
+
+      const mergedTwoPSet = CrdtElementGraph.merge(
+        crdtElementGraph,
+        crdtElementGraphTwo
+      );
+
+      const vertices = mergedTwoPSet.vertices;
+      const edges = mergedTwoPSet.edges;
+
+      expect(vertices.map(({ vertex }) => vertex)).to.eql([
+        "vertex-one",
+        "vertex-two",
+        "vertex-three",
+      ]);
+      expect(edges.map(({ edge }) => edge)).to.eql([
+        ["vertex-two", "vertex-three"],
+        ["vertex-three", "vertex-one"],
+      ]);
+    });
+  });
 });
+
+//dont add edge to same vertex

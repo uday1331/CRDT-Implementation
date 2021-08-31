@@ -3,6 +3,8 @@ import { TwoPSet } from "./two-p-set";
 import { MD5 as md5Hash } from "object-hash";
 
 interface CrdtElementGraphInterface {
+  vertices: Array<CrdtElementGraphVertexElement>;
+  edges: Array<CrdtElementGraphEdgeElement>;
   addVertex(id: string): TwoPSetElement;
   removeVertex(id: string): TwoPSetElement;
   existsVertex(id: string): boolean;
@@ -61,6 +63,14 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
   constructor() {
     this._vertexSet = new TwoPSet();
     this._edgeSet = new TwoPSet();
+  }
+
+  public get vertices(): Array<CrdtElementGraphVertexElement> {
+    return Array.from(this._vertexSet.getEffectiveAdds());
+  }
+
+  public get edges(): Array<CrdtElementGraphEdgeElement> {
+    return Array.from(this._edgeSet.getEffectiveAdds());
   }
 
   public addVertex(id: string): CrdtElementGraphVertexElement {
@@ -162,12 +172,23 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
     return [];
   }
 
-  // static merge(
-  //   first: CrdtElementGraph,
-  //   second: CrdtElementGraph
-  // ): CrdtElementGraph {
-  //   return first;
-  // }
+  static merge(
+    first: CrdtElementGraph,
+    second: CrdtElementGraph
+  ): CrdtElementGraph {
+    const mergedCrdtElementGraph = new CrdtElementGraph();
+
+    mergedCrdtElementGraph._vertexSet = TwoPSet.merge(
+      first._vertexSet,
+      second._vertexSet
+    );
+    mergedCrdtElementGraph._edgeSet = TwoPSet.merge(
+      first._edgeSet,
+      second._edgeSet
+    );
+
+    return mergedCrdtElementGraph;
+  }
 }
 
 export { CrdtElementGraph };

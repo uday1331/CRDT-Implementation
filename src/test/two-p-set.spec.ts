@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import { TwoPSetElement } from "../element-node";
 import { TwoPSet } from "../two-p-set";
-
-const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+import { delay } from "./utils";
 
 describe("Two-P set", () => {
   let twoPSet: TwoPSet<TwoPSetElement>;
