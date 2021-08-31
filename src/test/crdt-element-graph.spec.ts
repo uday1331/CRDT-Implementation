@@ -13,7 +13,7 @@ describe("CRDT Element Graph Tests", () => {
     it("adds vertex to Graph", () => {
       const res = crdtElementGraph.addVertex("vertex-one");
 
-      expect(res.vertex).to.be.equal("vertex-one");
+      expect(res.vertex).to.be.eql("vertex-one");
     });
 
     it("errors when trying add vertex to Graph if exists", () => {
@@ -38,7 +38,7 @@ describe("CRDT Element Graph Tests", () => {
       const original = crdtElementGraph.addVertex("vertex-one");
       const res = crdtElementGraph.removeVertex("vertex-one");
 
-      expect(res.vertex).to.be.equal(original.vertex);
+      expect(res.vertex).to.be.eql(original.vertex);
     });
 
     it("errors when trying to remove non existent vertex", () => {
@@ -72,6 +72,15 @@ describe("CRDT Element Graph Tests", () => {
 
       const res = () => crdtElementGraph.addEdge("vertex-one", "vertex-two");
       expect(res).to.throw("One or both vertices do not exist.");
+    });
+
+    it("errors when trying to add edge for same vertex", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+
+      const res = () => crdtElementGraph.addEdge("vertex-one", "vertex-one");
+      expect(res).to.throw(
+        "Cannot created edges to the same vertex. Vertices need to be mutually distinct."
+      );
     });
   });
 

@@ -123,6 +123,12 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
       throw new Error("One or both vertices do not exist.");
     }
 
+    if (u === v) {
+      throw new Error(
+        "Cannot created edges to the same vertex. Vertices need to be mutually distinct."
+      );
+    }
+
     return this._edgeSet.add(new CrdtElementGraphEdgeElement(u, v));
   }
 
