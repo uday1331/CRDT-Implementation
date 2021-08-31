@@ -12,6 +12,8 @@ I tried to isolated concerns as much as possible by separating out the 2P Set an
 - Clarifications
 - Improvements
 
+The rest of the documentation can be found in the form of JSDocs in the class files.
+
 ## Examples
 
 You will not see any `index.ts` file in the project that has an example of how to use the interface. I have given some examples on how to use funcitons below next to their documentation. However, I do believe good tests can act as good documentation too :).
