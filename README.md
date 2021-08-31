@@ -4,8 +4,6 @@
 
 I had a really fun time working on this project. During the time that I had, I experimented with two implementations and very quickly realised why the first (using 2 - adjacency list like structures) didn't work. For my implementation, I chose to stick to the mathematical example of 2P-2P sets where one is used for the set of vertices and one for edges.
 
-I tried to isolated concerns as much as possible by separating out the 2P Set and the Graph itself both on implementation and tests.
-
 ## Sections
 
 - [Examples](#examples)
@@ -48,6 +46,10 @@ const mergedTwoPSet = CrdtElementGraph.merge(
 # Clarifications
 
 Wanted to mention some of the design choices I made. I may have forgotten to mention some things. Feel free to ask me about them. I tried to reason about most things before going with them.
+
+- I tried to isolated concerns as much as possible by separating out the 2P Set and the Graph itself both on implementation and tests.
+
+- While wanting to make the `TwoPSet` dynamic, I wanted most accesses to be `O(1)`, so I used a `Map` along with a requirement on the `TwoPSetElement` for the hashing function.
 
 - Using Depth First Search for Path Finding: Mainly because there was not requirment on it and I thought it was a bit more efficient to implement a stack with javascript's `Arrays` because of the `pop` and `push` functions
 
