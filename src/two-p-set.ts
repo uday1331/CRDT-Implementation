@@ -1,6 +1,7 @@
 interface TwoPSetInterface<T> {
   add(element: T): T;
   remove(id: string): T;
+  removeElement(element: T): T;
   exists(id: string): boolean;
   getEffectiveAdds(): Array<T>;
   getEffectiveRemoves(): Array<T>;
@@ -32,6 +33,16 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
     this._addSet.set(key, element);
     return this._addSet.get(key);
+  }
+
+  public removeElement(element: T): T {
+    const key = element.hash();
+    if (!this.exists(key)) {
+      throw new Error(`Element with key: ${key} does not exist.`);
+    }
+
+    this._removeSet.set(key, element);
+    return this._removeSet.get(key);
   }
 
   public remove(key: string): T {
@@ -68,5 +79,55 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
     return Array.from(this._removeSet.values()).filter(
       (value) => !this.exists(value.hash())
     );
+  }
+
+  static unionArrays<T extends TwoPSetElementInterface<T>>(
+    x: Array<T>,
+    y: Array<T>
+  ): Array<T> {
+    const unionSet: Map<string, T> = new Map();
+
+    x.forEach((element) => {
+      const key = element.hash();
+      if (!unionSet.has(key)) {
+        unionSet.set(key, element);
+      }
+    });
+
+    y.forEach((element) => {
+      const key = element.hash();
+      if (!unionSet.has(key)) {
+        unionSet.set(key, element);
+      }
+    });
+
+    return Array.from(unionSet.values());
+  }
+
+  static merge<T extends TwoPSetElementInterface<T>>(
+    first: TwoPSet<T>,
+    second: TwoPSet<T>
+  ): TwoPSet<T> {
+    const mergedSet: TwoPSet<T> = new TwoPSet();
+
+    const unionAdds = this.unionArrays(
+      first.getEffectiveAdds(),
+      second.getEffectiveAdds()
+    );
+
+    const unionRemoves = this.unionArrays(
+      first.getEffectiveRemoves(),
+      second.getEffectiveRemoves()
+    );
+
+    unionAdds.forEach((element) => {
+      mergedSet.add(element);
+    });
+
+    unionRemoves.forEach((element) => {
+      mergedSet.removeElement(element);
+    });
+
+    return mergedSet;
   }
 }

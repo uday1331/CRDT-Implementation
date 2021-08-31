@@ -113,4 +113,34 @@ describe("Two-P set", () => {
       expect(res.map(({ id }) => id)).to.have.members([original.id]);
     });
   });
+
+  describe("Merge Sets", () => {
+    it("get merged sets after merge between sets with add and remove", () => {
+      const twoPSetTwo: TwoPSet<TwoPSetElement> = new TwoPSet();
+
+      twoPSet.add(new TwoPSetElement("element-one", 1));
+      twoPSet.add(new TwoPSetElement("element-two", 2));
+      twoPSet.add(new TwoPSetElement("element-three", 3));
+
+      twoPSetTwo.add(new TwoPSetElement("element-one", 1));
+      twoPSetTwo.add(new TwoPSetElement("element-two", 3));
+      twoPSetTwo.add(new TwoPSetElement("element-four", 4));
+      twoPSetTwo.removeElement(new TwoPSetElement("element-one", 4));
+
+      const mergedTwoPSet = TwoPSet.merge(twoPSet, twoPSetTwo);
+
+      const effectiveAdds = mergedTwoPSet.getEffectiveAdds();
+      const effectiveRemoves = mergedTwoPSet.getEffectiveRemoves();
+      expect(effectiveAdds).to.have.length(3);
+      expect(effectiveAdds.map(({ id }) => id)).to.have.members([
+        "element-two",
+        "element-three",
+        "element-four",
+      ]);
+      expect(effectiveRemoves).to.have.length(1);
+      expect(effectiveRemoves.map(({ id }) => id)).to.have.members([
+        "element-one",
+      ]);
+    });
+  });
 });
