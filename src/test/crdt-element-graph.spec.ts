@@ -106,7 +106,7 @@ describe("CRDT Element Graph Tests", () => {
     });
   });
 
-  describe("Connected Edges", () => {
+  describe("Connected Vertices", () => {
     it("get connected vertices for vertices of edge", async () => {
       crdtElementGraph.addVertex("vertex-one");
       crdtElementGraph.addVertex("vertex-two");
@@ -136,6 +136,22 @@ describe("CRDT Element Graph Tests", () => {
   });
 
   describe("Find Path", () => {
+    it("no path between 2 non-connected vertices of graph", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+      crdtElementGraph.addVertex("vertex-two");
+
+      const res = crdtElementGraph.findPath("vertex-one", "vertex-two");
+
+      expect(res).to.have.length(0);
+    });
+
+    it("errors when trying to find path for non existent vertices", async () => {
+      crdtElementGraph.addVertex("vertex-one");
+
+      const res = () => crdtElementGraph.findPath("vertex-one", "vertex-three");
+      expect(res).to.throw("One or both vertices do not exist.");
+    });
+
     it("find path between ends of v-shaped graph", async () => {
       crdtElementGraph.addVertex("vertex-one");
       crdtElementGraph.addVertex("vertex-two");
@@ -196,13 +212,13 @@ describe("CRDT Element Graph Tests", () => {
       await delay(10);
       crdtElementGraphTwo.removeEdge("vertex-one", "vertex-two");
 
-      const mergedTwoPSet = CrdtElementGraph.merge(
+      const mergedCrdtElementGraph = CrdtElementGraph.merge(
         crdtElementGraph,
         crdtElementGraphTwo
       );
 
-      const vertices = mergedTwoPSet.vertices;
-      const edges = mergedTwoPSet.edges;
+      const vertices = mergedCrdtElementGraph.vertices;
+      const edges = mergedCrdtElementGraph.edges;
 
       expect(vertices.map(({ vertex }) => vertex)).to.eql([
         "vertex-one",
@@ -216,5 +232,3 @@ describe("CRDT Element Graph Tests", () => {
     });
   });
 });
-
-//dont add edge to same vertex

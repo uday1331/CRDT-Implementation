@@ -1,60 +1,7 @@
-import { TwoPSetElement } from "./element-node";
-import { TwoPSet } from "./two-p-set";
-import { MD5 as md5Hash } from "object-hash";
-
-interface CrdtElementGraphInterface {
-  vertices: Array<CrdtElementGraphVertexElement>;
-  edges: Array<CrdtElementGraphEdgeElement>;
-  addVertex(id: string): TwoPSetElement;
-  removeVertex(id: string): TwoPSetElement;
-  existsVertex(id: string): boolean;
-  addEdge(u: string, v: string): TwoPSetElement;
-  removeEdge(u: string, v: string): TwoPSetElement;
-  getConnectedVertices(id: string): Array<TwoPSetElement>;
-  findPath(u: string, v: string): Array<string>;
-}
-
-class CrdtElementGraphVertexElement extends TwoPSetElement {
-  private _vertex: string;
-
-  constructor(vertex: string) {
-    super();
-    this._vertex = vertex;
-  }
-
-  public get vertex(): string {
-    return this._vertex;
-  }
-
-  public clone(): CrdtElementGraphVertexElement {
-    return new CrdtElementGraphVertexElement(this._vertex);
-  }
-
-  public hash(): string {
-    return md5Hash(this._vertex);
-  }
-}
-
-class CrdtElementGraphEdgeElement extends TwoPSetElement {
-  private _edge: [string, string];
-
-  constructor(u: string, v: string) {
-    super();
-    this._edge = u > v ? [u, v] : [v, u];
-  }
-
-  public get edge(): [string, string] {
-    return this._edge;
-  }
-
-  public clone(): CrdtElementGraphEdgeElement {
-    return new CrdtElementGraphEdgeElement(this._edge[0], this._edge[1]);
-  }
-
-  public hash(): string {
-    return md5Hash(this._edge);
-  }
-}
+import { TwoPSet } from "../two-p-set";
+import { CrdtElementGraphVertexElement } from "./vertex-element";
+import { CrdtElementGraphEdgeElement } from "./edge-element";
+import { CrdtElementGraphInterface } from "./interface";
 
 class CrdtElementGraph implements CrdtElementGraphInterface {
   private _vertexSet: TwoPSet<CrdtElementGraphVertexElement>;
@@ -147,6 +94,10 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
   }
 
   public findPath(u: string, v: string): Array<string> {
+    if (!this.existsVertex(u) || !this.existsVertex(v)) {
+      throw new Error("One or both vertices do not exist.");
+    }
+
     const discovered: Set<string> = new Set();
     const stack: Array<string> = [];
     const path: Array<string> = [];
