@@ -15,9 +15,9 @@ describe("Two-P set", () => {
       const original = new TwoPSetElement("element-one", 1);
       const res = twoPSet.add(original);
 
-      expect(res.id).to.be.equal("element-one");
-      expect(res.hash()).to.be.equal(original.hash());
-      expect(res.created).to.be.equal(1);
+      expect(res.id).to.be.eql("element-one");
+      expect(res.hash()).to.be.eql(original.hash());
+      expect(res.created).to.be.eql(1);
     });
 
     it("errors when trying add element to Set if used id", () => {
@@ -56,7 +56,7 @@ describe("Two-P set", () => {
       await delay(20);
       const res = twoPSet.remove(original.hash());
 
-      expect(res.id).to.be.equal(original.id);
+      expect(res.id).to.be.eql(original.id);
       expect(res.created).to.be.greaterThan(original.created);
     });
 
