@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { MD5 as md5Hash } from "object-hash";
-import { TwoPSetElementInterface } from "./two-p-set";
+import { TwoPSetElementInterface } from ".";
 
 export class TwoPSetElement implements TwoPSetElementInterface<TwoPSetElement> {
   private _created: number;

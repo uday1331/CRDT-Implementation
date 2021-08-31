@@ -1,4 +1,4 @@
-import { TwoPSetElement } from "../element-node";
+import { TwoPSetElement } from "../two-p-set";
 import { MD5 as md5Hash } from "object-hash";
 
 export class CrdtElementGraphEdgeElement extends TwoPSetElement {

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { TwoPSetElement } from "../element-node";
+import { TwoPSetElement } from "../two-p-set";
 import { TwoPSet } from "../two-p-set";
 import { delay } from "./utils";
 

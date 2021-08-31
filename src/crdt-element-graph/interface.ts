@@ -1,4 +1,4 @@
-import { TwoPSetElement } from "../element-node";
+import { TwoPSetElement } from "../two-p-set";
 import { CrdtElementGraphEdgeElement } from "./edge-element";
 import { CrdtElementGraphVertexElement } from "./vertex-element";
 

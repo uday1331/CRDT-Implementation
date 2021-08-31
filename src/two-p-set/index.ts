@@ -1,18 +1,5 @@
-interface TwoPSetInterface<T> {
-  add(element: T): T;
-  remove(id: string): T;
-  removeElement(element: T): T;
-  exists(id: string): boolean;
-  getEffectiveAdds(): Array<T>;
-  getEffectiveRemoves(): Array<T>;
-}
-
-export interface TwoPSetElementInterface<T> {
-  id: string;
-  created: number;
-  clone(): T;
-  hash(): string;
-}
+import { TwoPSetElement } from "./two-p-set-element";
+import { TwoPSetElementInterface, TwoPSetInterface } from "./interface";
 
 export class TwoPSet<T extends TwoPSetElementInterface<T>>
   implements TwoPSetInterface<T>
@@ -131,3 +118,5 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
     return mergedSet;
   }
 }
+
+export { TwoPSetElement, TwoPSetElementInterface };
