@@ -19,7 +19,7 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Get all Vertices in the Graph after all add and remove
-   * @return {Array<CrdtElementGraphVertexElement>} -  List of vertices
+   * @return {Array<CrdtElementGraphVertexElement>} List of vertices
    */
   public get vertices(): Array<CrdtElementGraphVertexElement> {
     return Array.from(this._vertexSet.getEffectiveAdds());
@@ -27,7 +27,7 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Get all Edges in the Graph after all add and remove
-   * @return {Array<CrdtElementGraphEdgeElement>} -  List of edges
+   * @return {Array<CrdtElementGraphEdgeElement>} List of edges
    */
   public get edges(): Array<CrdtElementGraphEdgeElement> {
     return Array.from(this._edgeSet.getEffectiveAdds());
@@ -35,8 +35,8 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Add a new vertex to the vertex TwoPSet using the vertex id
-   * @param {string} id - ID/Name of the vertex to be added. Needs to be unique.
-   * @return {CrdtElementGraphVertexElement} -  The added vertex
+   * @param {string} id ID/Name of the vertex to be added. Needs to be unique.
+   * @return {CrdtElementGraphVertexElement} The added vertex
    */
   public addVertex(id: string): CrdtElementGraphVertexElement {
     try {
@@ -48,8 +48,8 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Remove a vertex from the vertex TwoPSet using the vertex id
-   * @param {string} id - ID/Name of the vertex to be removed.
-   * @return {CrdtElementGraphVertexElement} -  The removed vertex
+   * @param {string} id ID/Name of the vertex to be removed.
+   * @return {CrdtElementGraphVertexElement} The removed vertex
    */
   public removeVertex(id: string): CrdtElementGraphVertexElement {
     const clone = new CrdtElementGraphVertexElement(id);
@@ -62,8 +62,8 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Checks whether vertex exists by id
-   * @param {string} id - ID/Name of the vertex to be checked.
-   * @return {CrdtElementGraphVertexElement} -  Whether the vertex exists or not.
+   * @param {string} id ID/Name of the vertex to be checked.
+   * @return {CrdtElementGraphVertexElement} Whether the vertex exists or not.
    */
   public existsVertex(id: string): boolean {
     const clone = new CrdtElementGraphVertexElement(id);
@@ -72,8 +72,8 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Get list of vertices connected to the vertex with provided ID.
-   * @param {string} id - ID/Name of the vertex to be queried.
-   * @return {Array<CrdtElementGraphVertexElement>} -  List of connected vertices.
+   * @param {string} id ID/Name of the vertex to be queried.
+   * @return {Array<CrdtElementGraphVertexElement>} List of connected vertices.
    */
 
   public getConnectedVertices(
@@ -101,9 +101,9 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Add a new edge to the edge TwoPSet using the vertex ids for the edge.
-   * @param {string} u - ID/Name of the first vertex the edge connects.
-   * @param {string} v - ID/Name of the second vertex the edge connects.
-   * @return {CrdtElementGraphEdgeElement} -  The added edge.
+   * @param {string} u ID/Name of the first vertex the edge connects.
+   * @param {string} v ID/Name of the second vertex the edge connects.
+   * @return {CrdtElementGraphEdgeElement} The added edge.
    */
   public addEdge(u: string, v: string): CrdtElementGraphEdgeElement {
     if (!this.existsVertex(u) || !this.existsVertex(v)) {
@@ -121,9 +121,9 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Remove an edge from the edge TwoPSet using the vertex ids for the edge.
-   * @param {string} u - ID/Name of the first vertex the edge connects.
-   * @param {string} v - ID/Name of the second vertex the edge connects.
-   * @return {CrdtElementGraphEdgeElement} -  The removed edge.
+   * @param {string} u ID/Name of the first vertex the edge connects.
+   * @param {string} v ID/Name of the second vertex the edge connects.
+   * @return {CrdtElementGraphEdgeElement} The removed edge.
    */
   public removeEdge(u: string, v: string): CrdtElementGraphEdgeElement {
     if (!this.existsVertex(u) || !this.existsVertex(v)) {
@@ -136,9 +136,9 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Check if the edge exists in the edge TwoPSet using the vertex ids for the edge.
-   * @param {string} u - ID/Name of the first vertex the edge connects.
-   * @param {string} v - ID/Name of the second vertex the edge connects.
-   * @return {CrdtElementGraphEdgeElement} -  Whether the edge exists or not.
+   * @param {string} u ID/Name of the first vertex the edge connects.
+   * @param {string} v ID/Name of the second vertex the edge connects.
+   * @return {CrdtElementGraphEdgeElement} Whether the edge exists or not.
    */
   public existsEdge(u: string, v: string): boolean {
     const clone = new CrdtElementGraphEdgeElement(u, v);
@@ -147,9 +147,9 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
 
   /**
    * Return a path between given vertices.
-   * @param {string} u - ID/Name of the first vertex.
-   * @param {string} v - ID/Name of the second vertex.
-   * @return {Array<string>} -  The path as an ordered list of ID/Name of vertices.
+   * @param {string} u ID/Name of the first vertex.
+   * @param {string} v ID/Name of the second vertex.
+   * @return {Array<string>} The path as an ordered list of ID/Name of vertices.
    * Returns [] for no path.
    */
   public findPath(u: string, v: string): Array<string> {
@@ -191,9 +191,9 @@ class CrdtElementGraph implements CrdtElementGraphInterface {
   /**
    * Merges two state-based CrdtElementGraphs according to lastest creation time. Uses underlying
    * methods in TwoPSet to merge vertex and edge sets.
-   * @param {Array<T>} first - CrdtElementGraph to be merged.
-   * @param {Array<T>} second - CrdtElementGraphsto be merged.
-   * @return {Array<T>} - Merged CrdtElementGraphs
+   * @param {Array<T>} first CrdtElementGraph to be merged.
+   * @param {Array<T>} second CrdtElementGraphsto be merged.
+   * @return {Array<T>} Merged CrdtElementGraphs
    */
   static merge(
     first: CrdtElementGraph,

@@ -19,7 +19,7 @@ export class CrdtElementGraphVertexElement extends TwoPSetElement {
 
   /**
    * Getter for the edge vertices.
-   * @returns {string} - The vertex.
+   * @returns {string} The vertex.
    */
   public get vertex(): string {
     return this._vertex;

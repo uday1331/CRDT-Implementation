@@ -13,8 +13,8 @@ export class CrdtElementGraphEdgeElement extends TwoPSetElement {
    * The constructor ensures an order in the vertex naming for the edge to resolve duplicates.
    * Thus, given the undirected nature of the graph, ["A", "B"] and ["B", "A"] both get stored as
    * ["B", "A"]. It helps the hashing function realise they are the same edge.
-   * @param {string} u - ID/Name of the first vertex the edge connects.
-   * @param {string} v - ID/Name of the second vertex the edge connects.
+   * @param {string} u ID/Name of the first vertex the edge connects.
+   * @param {string} v ID/Name of the second vertex the edge connects.
    */
   constructor(u: string, v: string) {
     super();
@@ -23,7 +23,7 @@ export class CrdtElementGraphEdgeElement extends TwoPSetElement {
 
   /**
    * Getter for the edge vertices.
-   * @returns {[string, string]} - The vertex pair comprising the edge.
+   * @returns {[string, string]} The vertex pair comprising the edge.
    */
   public get edge(): [string, string] {
     return this._edge;

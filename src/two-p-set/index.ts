@@ -23,8 +23,8 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
   /**
    * Adds element to the 2P-Set.
-   * @param {T} element - Value to be added. Has same type constraints as generic for class.
-   * @return {T} -  returns added element.
+   * @param {T} element Value to be added. Has same type constraints as generic for class.
+   * @return {T} returns added element.
    */
   public add(element: T): T {
     const key = element.hash();
@@ -38,8 +38,8 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
   /**
    * Removes element from the 2P-Set.
-   * @param {T} element - Value to be removed. Has same type constraints as generic for class.
-   * @return {T} -  returns removed element.
+   * @param {T} element Value to be removed. Has same type constraints as generic for class.
+   * @return {T} returns removed element.
    */
   public removeElement(element: T): T {
     const key = element.hash();
@@ -53,8 +53,8 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
   /**
    * Remove element from the 2P-Set by uniquely defined hash.
-   * @param {string} key - key i.e hash for the object that needs to be removed.
-   * @return {T} returns the removed element
+   * @param {string} key Key i.e hash for the object that needs to be removed.
+   * @return {T} The removed element
    */
   public remove(key: string): T {
     if (!this.exists(key)) {
@@ -70,8 +70,8 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
   /**
    * Check if element exists in the 2p-Set
-   * @param {string} key - key i.e hash for the object whose existence needs to be checked.
-   * @return {boolean} - whether the object exists or not.
+   * @param {string} key Key i.e hash for the object whose existence needs to be checked.
+   * @return {boolean} Whether the object exists or not.
    */
   public exists(key: string): boolean {
     if (
@@ -89,7 +89,7 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
    *
    * Get the effective adds i.e. given all states i.e. adds and removes, get all
    * add states where the element still exists in the 2P-Set.
-   * @return {Array<T>} - array of effective adds.
+   * @return {Array<T>} Array of effective adds.
    */
   public getEffectiveAdds(): Array<T> {
     return Array.from(this._addSet.values()).filter((value) =>
@@ -100,7 +100,7 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
   /**
    * Get the effective removes i.e. given all states i.e. adds and removes, get all
    * add states where the element does not exist in the 2P-Set.
-   * @return {Array<T>} - array of effective removes.
+   * @return {Array<T>} Array of effective removes.
    */
   public getEffectiveRemoves(): Array<T> {
     return Array.from(this._removeSet.values()).filter(
@@ -113,9 +113,9 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
    * Useful in removing duplicates where the hash of two elements in different arrays might be
    * same.
    * eg: [2, 3, 4] and [3, 4, 1] results in [1, 2, 3, 4]. (The values in array represent hash values.)
-   * @param {Array<T>} first - Array with same type constraints as class to union.
-   * @param {Array<T>} second - Array with same type constraints as class to union.
-   * @return {Array<T>} - Union-ed Array
+   * @param {Array<T>} first Array with same type constraints as class to union.
+   * @param {Array<T>} second Array with same type constraints as class to union.
+   * @return {Array<T>} Union-ed Array
    */
   static unionArrays<T extends TwoPSetElementInterface<T>>(
     first: Array<T>,
@@ -142,9 +142,9 @@ export class TwoPSet<T extends TwoPSetElementInterface<T>>
 
   /**
    * Merges two state-based 2P-Sets according to lastest creation time.
-   * @param {Array<T>} first - 2P-Set to be merged.
-   * @param {Array<T>} second - 2P-Set to be merged..
-   * @return {Array<T>} - Merged 2P-Set
+   * @param {Array<T>} first 2P-Set to be merged.
+   * @param {Array<T>} second 2P-Set to be merged..
+   * @return {Array<T>} Merged 2P-Set
    */
   static merge<T extends TwoPSetElementInterface<T>>(
     first: TwoPSet<T>,
